@@ -1,0 +1,9 @@
+/venv
+/env
+/bin
+/build
+/test
+/.buildozer
+
+*.env
+*.spec

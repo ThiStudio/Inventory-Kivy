@@ -1,0 +1,124 @@
+#:kivy 2.0.0
+
+<BackButton@Button>:
+    size_hint_y: None
+    height: 60
+
+<StartScr>
+    cols: 2
+    padding: [10, 10, 10, 10]
+    Button:
+        id: b1
+        text: "Equipamentos"
+    Button:
+        id: b2
+        text: "Eventos"
+    Button:
+        id: b3
+        text: "Checklists"
+    Button:
+        id: b4
+        text: "Admin"
+
+<EquipScr>
+    cols: 1
+    padding: [10, 10, 10, 10]
+    BackButton:
+        id: back
+        text: "Voltar"
+    GridLayout:
+        padding: [10, 10, 10, 10]
+        cols: 3
+        size_hint_y: 2
+        GridLayout:
+            size_hint_x: 9
+            cols: 1
+            Label:
+                text: "Pesquisa"
+            TextInput:
+                id: i_pesquisado
+        Button:
+            id: b_pesquisar
+            size_hint_x: 3
+            text: "Pesquisar"
+    GridLayout:
+        padding: [10, 10, 10, 10]
+        size_hint_y: 8
+        cols: 2
+        Label:
+            text: "ID"
+            size_hint_x: 1
+        TextInput:
+            id: i_item_id
+            size_hint_x: 3
+        Label:
+            text: "Equipamento"
+            size_hint_x: 1
+        TextInput:
+            id: i_item_name
+            size_hint_x: 3
+        Label:
+            text: "Qtd Total"
+            size_hint_x: 1
+        TextInput:
+            id: i_item_qttot
+            size_hint_x: 3
+        Label:
+            text: "Qtd em uso"
+            size_hint_x: 1
+        TextInput:
+            id: i_item_qtuso
+            size_hint_x: 3
+        Label:
+            text: "Qtd com defeito"
+            size_hint_x: 1
+        TextInput:
+            id: i_item_qtdef
+            size_hint_x: 3
+        Label:
+            text: "Qtd disponivel"
+            size_hint_x: 1
+        TextInput:
+            id: i_item_qtdis
+            size_hint_x: 3
+        Label:
+            text: "Observações"
+            size_hint_x: 1
+        TextInput:
+            id: i_item_obs
+            size_hint_x: 3
+    GridLayout:
+        cols: 3
+        Button:
+            id:b_item_add
+            text:"Adicionar"
+        Button:
+            id:b_item_def
+            text:"Defeito"
+        Button:
+            id:b_item_sav
+            text:"Salvar"
+
+<EventScr>
+    cols: 1
+    BackButton:
+        id: back
+        text: "Voltar"
+    Label:
+        text: "Events"
+
+<CheckScr>
+    cols: 1
+    BackButton:
+        id: back
+        text: "Voltar"
+    Label:
+        text: "Checklists"
+
+<AdminScr>
+    cols: 1
+    BackButton:
+        id: back
+        text: "Voltar"
+    Label:
+        text: "Admin"
