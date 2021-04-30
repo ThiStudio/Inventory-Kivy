@@ -1,9 +1,5 @@
 #:kivy 2.0.0
 
-<BackButton@Button>:
-    size_hint_y: None
-    height: 60
-
 <StartScr>
     cols: 2
     padding: [10, 10, 10, 10]
@@ -41,6 +37,67 @@
             id: b_pesquisar
             size_hint_x: 3
             text: "Pesquisar"
+    Equipamento:
+        id: equip
+        size_hint_y: 9
+
+
+<EventScr>
+    cols: 1
+    BackButton:
+        id: back
+        text: "Voltar"
+    Label:
+        text: "Events"
+    Evento:
+        id: event
+        size_hint_y: 9
+
+<CheckScr>
+    cols: 1
+    BackButton:
+        id: back
+        text: "Voltar"
+    Label:
+        text: "Checklists"
+    Checklist:
+        id: check
+        size_hint_y: 9
+
+<AdminScr>
+    cols: 1
+    BackButton:
+        id: back
+        text: "Voltar"
+    Label:
+        text: "Admin"
+    Label:
+        text: "API related configs and stoof"
+
+#Interfaces below
+<BackButton@Button>:
+    size_hint_y: None
+    height: 60
+
+#Item da lista de eventos
+
+
+#Item da lista de checklists
+
+
+#Item da lista de equipamentos
+
+
+#Container da lista
+
+
+#Popup calendario
+
+
+#Selected Equip
+<Equipamento@GridLayout>:
+    cols: 1
+    padding: [10, 10, 10, 10]
     GridLayout:
         padding: [10, 10, 10, 10]
         size_hint_y: 8
@@ -53,40 +110,29 @@
             size_hint_x: 3
         Label:
             text: "Equipamento"
-            size_hint_x: 1
         TextInput:
             id: i_item_name
-            size_hint_x: 3
         Label:
             text: "Qtd Total"
-            size_hint_x: 1
         TextInput:
             id: i_item_qttot
-            size_hint_x: 3
         Label:
             text: "Qtd em uso"
-            size_hint_x: 1
         TextInput:
             id: i_item_qtuso
-            size_hint_x: 3
         Label:
             text: "Qtd com defeito"
-            size_hint_x: 1
         TextInput:
             id: i_item_qtdef
-            size_hint_x: 3
         Label:
             text: "Qtd disponivel"
-            size_hint_x: 1
         TextInput:
             id: i_item_qtdis
-            size_hint_x: 3
         Label:
             text: "Observações"
-            size_hint_x: 1
         TextInput:
             id: i_item_obs
-            size_hint_x: 3
+            size_hint_x: 1
     GridLayout:
         cols: 3
         Button:
@@ -99,26 +145,63 @@
             id:b_item_sav
             text:"Salvar"
 
-<EventScr>
+#Evento Selecionado
+<Evento@GridLayout>:
     cols: 1
-    BackButton:
-        id: back
-        text: "Voltar"
-    Label:
-        text: "Events"
+    padding: [10, 10, 10, 10]
+    GridLayout:
+        padding: [10, 10, 10, 10]
+        size_hint_y: 8
+        cols: 2
+        Label:
+            text: "Evento"
+            size_hint_x: 3
+        TextInput:
+            id: i_event_name
+            size_hint_x: 8
+        Label:
+            text: "Montagem"
+        TextInput:
+            id: i_event_start
+        Label:
+            text: "Desmontagem"
+        TextInput:
+            id: i_event_end
+        Label:
+            text: "Equipe"
+        TextInput:
+            id: i_event_team
+        Label:
+            text: "Checklist"
+        TextInput:
+            id: i_event_check
+        Label:
+            text: "Observações"
+        TextInput:
+            id: i_event_obs
+            size_hint_x: 1
+    GridLayout:
+        cols: 3
+        Button:
+            id:b_event_cancel
+            text:"Cancelar"
+        Button:
+            id:b_event_edit
+            text:"Editar"
+        Button:
+            id:b_event_check
+            text:"Checklist"
 
-<CheckScr>
+#Checklist selecionada
+<Checklist@GridLayout>:
     cols: 1
-    BackButton:
-        id: back
-        text: "Voltar"
+    padding: [10, 10, 10, 10]
     Label:
-        text: "Checklists"
-
-<AdminScr>
-    cols: 1
-    BackButton:
-        id: back
-        text: "Voltar"
+        text: "Nome da Checklist"
+    TextInput:
+        id: i_check_name
     Label:
-        text: "Admin"
+        text: "Itens"
+    TextInput:
+        id: i_check_items
+        size_hint_y: 8
