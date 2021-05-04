@@ -17,12 +17,14 @@
         text: "Admin"
 
 <EquipScr>
+    id: equips
     cols: 1
     padding: [10, 10, 10, 10]
     BackButton:
         id: back
         text: "Voltar"
     GridLayout:
+        id: searchbar
         padding: [10, 10, 10, 10]
         cols: 3
         size_hint_y: 2
@@ -105,10 +107,6 @@
 #Item da lista de equipamentos
 <EquipItem>
     cols: 2
-
-    l_name: ""
-    l_id: ""
-
     Label:
         text: root.l_name
     Label:
@@ -132,9 +130,12 @@
         orientation: 'vertical'
 
 #Selected Equip
-<Equipamento@GridLayout>:
+<Equipamento>
     cols: 1
     padding: [10, 10, 10, 10]
+    BackButton:
+        id: back_from_item
+        text: "Voltar"
     GridLayout:
         padding: [10, 10, 10, 10]
         size_hint_y: 8
