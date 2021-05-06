@@ -1,3 +1,6 @@
+import json
+import os
+
 import kivy
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
@@ -183,8 +186,14 @@ class Main(App):
     wrapper4 = ScreenWrapper(name = 'Checklists')
     wrapper5 = ScreenWrapper(name = 'Admin')
 
+    configs = {}
+
     #Inicialização das páginas no Screen Manager
     def build(self):
+        with open('config.json') as config_file:
+            self.configs = config_file.read()
+            print(self.configs)
+
         start = StartScr()
         
         #Atrelando funções aos botões do menu principal
