@@ -72,7 +72,49 @@ class CheckItem(RecycleViewBehavior, GridLayout):
     pass
 
 class EventItem(RecycleViewBehavior, GridLayout):
-    pass
+    touchable = BooleanProperty(True)
+
+    #interface items
+    l_name = StringProperty("")
+    l_start = StringProperty("")
+    l_end = StringProperty("")
+
+    #detail items
+    l_team = StringProperty("")
+    l_check = StringProperty("")
+    l_obs = StringProperty("")
+
+    def __init__(self, **kwargs):
+        super(EventItem, self).__init__(**kwargs)
+        self.app = App.get_running_app()
+        self.event = Evento()
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.event.ids.i_event_name.text = self.l_name
+            self.event.ids.i_event_start.text = self.l_start
+            self.event.ids.i_event_end.text = self.l_end
+            self.event.ids.i_event_team.text = self.l_team
+            self.event.ids.i_event_check.text = self.l_check
+            self.event.ids.i_event_obs.text = self.l_obs
+
+            self.event.ids.back_from_item.bind(on_press = self.PressBack)
+
+            root = self.app.wrapper3
+            root.clear_widgets()
+            root.add_widget(self.event)
+
+    def PressBack(self, instance):
+        root = self.app.wrapper3
+        root.clear_widgets()
+        root.add_widget(root.widget)
+        self.event.ids.i_event_name.text = ""
+        self.event.ids.i_event_start.text = ""
+        self.event.ids.i_event_end.text = ""
+        self.event.ids.i_event_team.text = ""
+        self.event.ids.i_event_check.text = ""
+        self.event.ids.i_event_obs.text = ""
+
 
 #Screens
 class StartScr(GridLayout):
@@ -95,6 +137,12 @@ class AdminScr(GridLayout):
     pass
 
 class Equipamento(GridLayout):
+    pass
+
+class Evento(GridLayout):
+    pass
+
+class Checklist(GridLayout):
     pass
 
 #Main method
@@ -151,14 +199,17 @@ class Main(App):
         self.mng.current = self.wrapper2.name
 
     def PressEvents(self, instance):
-        #Remove widgets desatualizados, se houver
-        self.wrapper3.clear_widgets()
-        
+        items = [
+            {'l_name':"1", 'l_start':"30/04/2021", 'l_end':"31/04/2021", 'l_team':"Rena", 'l_check':"None", 'l_obs': "Turbo"}, 
+            {'l_name':"2", 'l_start':"30/04/2021", 'l_end':"31/04/2021", 'l_team':"Bada", 'l_check':"Other", 'l_obs': "Blaster"}, 
+            {'l_name':"3", 'l_start':"30/04/2021", 'l_end':"31/04/2021", 'l_team':"Rena", 'l_check':"KTC", 'l_obs': "Master"}, 
+            {'l_name':"Bada", 'l_start':"30/13/2022", 'l_end':"31/82/2022", 'l_team':"Gabriel", 'l_check':"None", 'l_obs': "Leviousa"}
+            ]        
         #Adquire o widget atualizado pela função
-        event = self.PopulateEvents()
+        event = self.PopulateEvents(items)
 
         #Adiciona o widget atualizado à página em branco
-        self.wrapper3.add_widget(event)
+        self.wrapper3.set_widget(event)
 
         #Modifica a visualização do usuário para a devida página
         self.mng.current = self.wrapper3.name
@@ -205,21 +256,14 @@ class Main(App):
 
         return equip
 
-    def PopulateEvents(self):
-
-        itensteste = [
-            {'l_name':"1", 'l_start':"30/04/2021", 'l_end':"31/04/2021"}, 
-            {'l_name':"2", 'l_start':"30/04/2021", 'l_end':"31/04/2021"}, 
-            {'l_name':"3", 'l_start':"30/04/2021", 'l_end':"31/04/2021"}, 
-            {'l_name':"Bada", 'l_start':"30/13/2022", 'l_end':"31/82/2022"}
-            ]
+    def PopulateEvents(self, itens):
 
         event = EventScr()
         event.ids.back.bind(on_press = self.PressBack)
 
         ev_ls = Lista()
         ev_ls.viewclass = EventItem
-        ev_ls.data = itensteste
+        ev_ls.data = itens
 
         event.ids.v_container.add_widget(ev_ls)
 

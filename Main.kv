@@ -81,11 +81,6 @@
 #Item da lista de eventos
 <EventItem>
     cols: 3
-
-    l_name: ""
-    l_start: ""
-    l_end: ""
-
     Label:
         text: root.l_name
     Label:
@@ -184,9 +179,12 @@
             text:"Salvar"
 
 #Evento Selecionado
-<Evento@GridLayout>:
+<Evento>
     cols: 1
     padding: [10, 10, 10, 10]
+    BackButton:
+        id: back_from_item
+        text: "Voltar"
     GridLayout:
         padding: [10, 10, 10, 10]
         size_hint_y: 8
@@ -231,7 +229,7 @@
             text:"Checklist"
 
 #Checklist selecionada
-<Checklist@GridLayout>:
+<Checklist>
     cols: 1
     padding: [10, 10, 10, 10]
     Label:
