@@ -8,7 +8,7 @@ from kivy.uix.recycleview import RecycleView, RecycleViewBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.widget import Widget
 from kivy.properties import BooleanProperty, StringProperty
-from apis.sheetsapi import Sheets as db
+from apis.sheetsapi import Sheets
 
 kivy.require('2.0.0')
 
@@ -178,6 +178,7 @@ class Checklist(GridLayout):
 #Main method
 class Main(App):
 
+    db = Sheets()
     mng = ScreenManager()
 
     wrapper1 = ScreenWrapper(name = 'Main')
@@ -192,7 +193,6 @@ class Main(App):
     def build(self):
         with open('config.json') as config_file:
             self.configs = config_file.read()
-            print(self.configs)
 
         start = StartScr()
         
@@ -217,7 +217,7 @@ class Main(App):
     #Botões do menu principal
 
     def PressEquips(self, instance):
-        items = db.GetEquips()
+        items = self.db.GetEquips()
 
         #Adquire o widget atualizado pela função
         eq = self.PopulateEquip(items)
@@ -230,7 +230,7 @@ class Main(App):
         self.mng.current = self.wrapper2.name
 
     def PressEvents(self, instance):
-        items = db.GetEvents()
+        items = self.db.GetEvents()
 
         #Adquire o widget atualizado pela função
         event = self.PopulateEvents(items)
@@ -242,7 +242,7 @@ class Main(App):
         self.mng.current = self.wrapper3.name
 
     def PressChecks(self, instance):
-        items = db.GetChecks()
+        items = self.db.GetChecks()
         
         #Adquire o widget atualizado pela função
         check = self.PopulateCheck(items)
