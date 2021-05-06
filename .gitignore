@@ -4,5 +4,7 @@
 /build
 /test
 /.buildozer
+/__pycache__
 
 *.env
+*.pyc
