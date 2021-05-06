@@ -91,9 +91,6 @@
 #Item da lista de checklists
 <CheckItem>
     cols: 2
-
-    l_name: ""
-    l_items: ""
     Label:
         text: root.l_name
     Label:
@@ -232,6 +229,9 @@
 <Checklist>
     cols: 1
     padding: [10, 10, 10, 10]
+    BackButton:
+        id: back_from_item
+        text: "Voltar"
     Label:
         text: "Nome da Checklist"
     TextInput:

@@ -69,7 +69,33 @@ class EquipItem(RecycleViewBehavior, GridLayout):
         self.equip.ids.i_item_obs.text = ""
 
 class CheckItem(RecycleViewBehavior, GridLayout):
-    pass
+    touchable = BooleanProperty(True)
+
+    l_name = StringProperty("")
+    l_items = StringProperty("")
+
+    def __init__(self, **kwargs):
+        super(CheckItem, self).__init__(**kwargs)
+        self.app = App.get_running_app()
+        self.check = Checklist()
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.check.ids.i_check_name.text = self.l_name
+            self.check.ids.i_check_items.text = self.l_items #l_items IDS must be stringed afterwards
+
+            self.check.ids.back_from_item.bind(on_press = self.PressBack)
+
+            root = self.app.wrapper4
+            root.clear_widgets()
+            root.add_widget(self.check)
+
+    def PressBack(self, instance):
+        root = self.app.wrapper4
+        root.clear_widgets()
+        root.add_widget(root.widget)
+        self.check.ids.i_check_name.text = ""
+        self.check.ids.i_check_items.text = ""
 
 class EventItem(RecycleViewBehavior, GridLayout):
     touchable = BooleanProperty(True)
@@ -215,14 +241,18 @@ class Main(App):
         self.mng.current = self.wrapper3.name
 
     def PressChecks(self, instance):
-        #Remove widgets desatualizados, se houver
-        self.wrapper4.clear_widgets()
+        items = [
+            {'l_name':"1", 'l_items':"2"}, 
+            {'l_name':"2", 'l_items':"3"}, 
+            {'l_name':"3", 'l_items':"4"}, 
+            {'l_name':"Bada", 'l_items':"5"}
+            ]
         
         #Adquire o widget atualizado pela função
-        check = self.PopulateCheck()
+        check = self.PopulateCheck(items)
 
         #Adiciona o widget atualizado à página em branco
-        self.wrapper4.add_widget(check)
+        self.wrapper4.set_widget(check)
 
         #Modifica a visualização do usuário para a devida página
         self.mng.current = self.wrapper4.name
@@ -269,21 +299,14 @@ class Main(App):
 
         return event
 
-    def PopulateCheck(self):
-
-        itensteste = [
-            {'l_name':"1", 'l_items':"2"}, 
-            {'l_name':"2", 'l_items':"3"}, 
-            {'l_name':"3", 'l_items':"4"}, 
-            {'l_name':"Bada", 'l_items':"5"}
-            ]
+    def PopulateCheck(self, itens):
 
         check = CheckScr()
         check.ids.back.bind(on_press = self.PressBack)
 
         ch_ls = Lista()
         ch_ls.viewclass = CheckItem
-        ch_ls.data = itensteste
+        ch_ls.data = itens
 
         check.ids.c_container.add_widget(ch_ls)
 
