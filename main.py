@@ -9,6 +9,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.widget import Widget
 from kivy.properties import BooleanProperty, StringProperty
 from apis.sheetsapi import Sheets
+import src.constants as const
 
 kivy.require('2.0.0')
 
@@ -177,8 +178,6 @@ class Checklist(GridLayout):
 
 #Main method
 class Main(App):
-
-    db = Sheets()
     mng = ScreenManager()
 
     wrapper1 = ScreenWrapper(name = 'Main')
@@ -188,11 +187,21 @@ class Main(App):
     wrapper5 = ScreenWrapper(name = 'Admin')
 
     configs = {}
+    init = const.init_test
 
     #Inicialização das páginas no Screen Manager
     def build(self):
-        with open('config.json') as config_file:
-            self.configs = config_file.read()
+        try:
+            open('config.json','x')
+            with open('config.json','w')as config_file:
+                config_file.write(json.dumps(self.init))
+                self.configs = config_file.read()
+        except:
+            print("Arquivo já existe")
+            with open('config.json','r') as config_file:
+                self.configs = config_file.read()
+        finally:
+            self.db = Sheets()
 
         start = StartScr()
         

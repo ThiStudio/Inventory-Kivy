@@ -8,3 +8,5 @@
 
 *.env
 *.pyc
+
+config.json

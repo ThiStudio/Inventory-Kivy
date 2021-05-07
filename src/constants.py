@@ -1,4 +1,4 @@
-{
+init_test = {
     "configs" : {
         "token" : "",
         "secret" : "",
