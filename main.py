@@ -1,5 +1,6 @@
 import json
 import os
+import os.path
 
 import kivy
 from kivy.app import App
@@ -165,7 +166,55 @@ class CheckScr(GridLayout):
     pass
 
 class AdminScr(GridLayout):
-    pass
+    configs : dict = {}
+
+    def __init__(self, **kwargs):
+        super(AdminScr, self).__init__(**kwargs)
+        with open('config.json','r')as config_file:
+            filestr = json.loads(config_file.read())
+            self.configs = filestr['configs']
+
+        self.ids.a_id.text = self.configs['sheetID']
+        self.ids.a_eqrng.text = self.configs['eqRNG']
+        self.ids.a_evrng.text = self.configs['evRNG']
+        self.ids.a_chrng.text = self.configs['chRNG']
+
+        self.ids.b_ok.bind(on_touch_down = self.PressOk)
+
+    def Ok_check(self):
+        check : bool = False
+
+        if self.ids.a_id.text and self.ids.a_eqrng.text and self.ids.a_evrng.text and self.ids.a_chrng.text:
+            check = True
+        else:
+            check = False
+
+        return check
+
+    def PressOk(self, instance, args):
+        app = App.get_running_app()
+
+        if self.Ok_check():
+            to_write = self.configs
+            to_write['sheetID'] = self.ids.a_id.text
+            to_write['eqRNG'] = self.ids.a_eqrng.text
+            to_write['evRNG'] = self.ids.a_evrng.text
+            to_write['chRNG'] = self.ids.a_chrng.text
+            to_write['init'] = "1"
+
+            writeable = {}
+            writeable['configs'] = to_write
+
+            with open('config.json','w') as config_file:
+                config_file.write(json.dumps(writeable))
+
+        else:
+            print("Sem todos os dados")
+
+        with open('config.json','r') as config_file:
+            filestr = json.loads(config_file.read())
+            app.configs = filestr['configs']
+
 
 class Equipamento(GridLayout):
     pass
@@ -186,30 +235,45 @@ class Main(App):
     wrapper4 = ScreenWrapper(name = 'Checklists')
     wrapper5 = ScreenWrapper(name = 'Admin')
 
-    configs = {}
+    configs : dict = {}
     init = const.init_test
+
+    #for debug purposes
+    #path = os.path.dirname(os.path.abspath(__file__))
+    #print(path)
 
     #Inicialização das páginas no Screen Manager
     def build(self):
+
+        #O software irá criar um arquivo de configuração para o usuário, caso ele não exista
         try:
             open('config.json','x')
             with open('config.json','w')as config_file:
                 config_file.write(json.dumps(self.init))
-                self.configs = config_file.read()
+                filestr = json.loads(config_file.read())
+                self.configs = filestr['configs']
         except:
             print("Arquivo já existe")
             with open('config.json','r') as config_file:
-                self.configs = config_file.read()
-        finally:
-            self.db = Sheets()
+                filestr = json.loads(config_file.read())
+                self.configs = filestr['configs']
+        
+        self.db = Sheets()
 
         start = StartScr()
         
         #Atrelando funções aos botões do menu principal
-        start.ids.b1.bind(on_press = self.PressEquips)
-        start.ids.b2.bind(on_press = self.PressEvents)
-        start.ids.b3.bind(on_press = self.PressChecks)
-        start.ids.b4.bind(on_press = self.PressAdmin)
+        #Checa-se primeiro se o arquivo de configuração possui as variáveis de usuário necessárias
+        if(self.configs['init'] == "0"):
+            #Caso contrário, apenas o botão 'Admin' será ativado para que o usuário inclua as variáveis
+            start.ids.b4.bind(on_press = self.PressAdmin)
+        else:
+            self.db.Connect()
+
+            start.ids.b1.bind(on_press = self.PressEquips)
+            start.ids.b2.bind(on_press = self.PressEvents)
+            start.ids.b3.bind(on_press = self.PressChecks)
+            start.ids.b4.bind(on_press = self.PressAdmin)
 
         #Adicionando a tela do menu principal ao Screen Manager
         self.wrapper1.add_widget(start)

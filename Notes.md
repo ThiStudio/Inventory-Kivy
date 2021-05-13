@@ -1,6 +1,5 @@
-config.json
+Criar API sheets
 
-Dummy
-Criar programaticamente
-Sem dados
-open('config.json','x') para verificar se o arquivo existe e cria-lo se negativo
+Conexão - Leitura - Escritura [Ordem]
+
+Sem conexão, sem opções
