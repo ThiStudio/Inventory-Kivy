@@ -1,6 +1,4 @@
 import json
-import os
-import os.path
 
 import kivy
 from kivy.app import App

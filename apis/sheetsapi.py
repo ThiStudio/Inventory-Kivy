@@ -51,19 +51,16 @@ class Sheets():
 
         self.service = build('sheets', 'v4', credentials=creds)
 
-        #if not values:
-        #    print('No data found.')
-        #else:
-        #    print('Name, Major:')
-        #    for row in values:
-        #        print('%s, %s' % (row[0], row[4]))
-
         self.connected = True
+
+        self.LoadEquips()
+        self.LoadEvents()
+        self.LoadChecks()
 
     #Os métodos a seguir devem solicitar as informações à DB e computar elas de forma
     #que os retornos sejam compatíveis com as interfaces criadas. Estes métodos são os
     #mediadores de recepção
-    def GetEquips(self):
+    def LoadEquips(self):
         if self.connected:
             sheet = self.service.spreadsheets()
             result = sheet.values().get(spreadsheetId=self.sheetID,
@@ -83,11 +80,8 @@ class Sheets():
                 formatted.append(item)
 
             self.equips = formatted
-            return self.equips
-        else:
-            return []
     
-    def GetEvents(self):
+    def LoadEvents(self):
         if self.connected:
             sheet = self.service.spreadsheets()
             result = sheet.values().get(spreadsheetId=self.sheetID,
@@ -105,11 +99,8 @@ class Sheets():
                 formatted.append(item)
 
             self.events = formatted
-            return self.events
-        else:
-            return []
 
-    def GetChecks(self):
+    def LoadChecks(self):
         if self.connected:
             sheet = self.service.spreadsheets()
             result = sheet.values().get(spreadsheetId=self.sheetID,
@@ -123,6 +114,13 @@ class Sheets():
                 formatted.append(item)
 
             self.checks = formatted
-            return self.checks
-        else:
-            return []
+
+    #Os métodos abaixo retornam os valores carregados e computados previamente
+    def GetEquips(self):
+        return self.equips
+
+    def GetEvents(self):
+        return self.events
+
+    def GetChecks(self):
+        return self.checks
