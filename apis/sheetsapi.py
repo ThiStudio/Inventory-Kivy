@@ -6,6 +6,10 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
+EQUIPS = 0
+EVENTS = 1
+CHECKS = 2
+
 class Sheets():
 
     equips = []
@@ -124,3 +128,24 @@ class Sheets():
 
     def GetChecks(self):
         return self.checks
+
+    #Os métodos a seguir irão manusear os dados do banco de dados
+
+    def Add(self):
+        pass
+
+    def Remove(self):
+        pass
+
+    def GetRange(self):
+        pass
+
+    def ReadRange(self, range):
+        if self.connected:
+            sheet = self.service.spreadsheets()
+            result = sheet.values().get(spreadsheetId=self.sheetID,
+                                        range=range).execute()
+            answer = result.get('values',[])
+            return answer
+        else:
+            return []
