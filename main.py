@@ -1,6 +1,7 @@
 import json
 
 import kivy
+from kivy.config import Config
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.recycleview import RecycleView, RecycleViewBehavior
@@ -11,6 +12,10 @@ from apis.sheetsapi import Sheets
 import src.constants as const
 
 kivy.require('2.0.0')
+
+Config.set('graphics', 'width', '300')
+Config.set('graphics', 'height', '600')
+Config.set('graphics', 'resizable', False)
 
 class ScreenWrapper(Screen):
     def __init__(self, **kwargs):

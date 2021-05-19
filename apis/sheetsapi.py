@@ -1,14 +1,12 @@
 import json
 import os.path
 
+import src.constants as const
+
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-
-EQUIPS = 0
-EVENTS = 1
-CHECKS = 2
 
 class Sheets():
 
@@ -20,6 +18,8 @@ class Sheets():
     equipsRange = ""
     eventsRange = ""
     checksRange = ""
+
+    currentRange = ""
 
     service = None
 
@@ -38,17 +38,15 @@ class Sheets():
     
     #Método para abrir conexão com a Database. Deve ser invocado antes de usar a API
     def Connect(self):
-        SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-
         creds = None
         if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+            creds = Credentials.from_authorized_user_file('token.json', const.SCOPES)
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', SCOPES)
+                    'credentials.json', const.SCOPES)
                 creds = flow.run_local_server(port=0)
             with open('token.json', 'w') as token:
                 token.write(creds.to_json())
@@ -131,16 +129,29 @@ class Sheets():
 
     #Os métodos a seguir irão manusear os dados do banco de dados
 
-    def Add(self):
-        pass
+    def Write(self, range, values):
+        value_list: list = values
+        data = [
+            {
+                'range':range,
+                'values':value_list
+            }
+        ]
+        body = {
+            'valueInputOption': "USER_ENTERED",
+            'data': data
+        }
+        result = self.service.spreadsheets().values().batchUpdate(
+            spreadsheetId=self.sheetID, body=body
+        ).execute()
+
+        print(str(json.loads(result)))
 
     def Remove(self):
         pass
 
-    def GetRange(self):
-        pass
-
-    def ReadRange(self, range):
+    def Read(self, range):
+        self.currentRange = range
         if self.connected:
             sheet = self.service.spreadsheets()
             result = sheet.values().get(spreadsheetId=self.sheetID,
